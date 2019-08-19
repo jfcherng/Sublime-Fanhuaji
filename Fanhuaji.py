@@ -1,3 +1,4 @@
+import io
 import json
 import sublime
 import sublime_plugin
@@ -42,6 +43,31 @@ class FanhuajiConvertPanelCommand(sublime_plugin.WindowCommand):
 
 class FanhuajiConvertCommand(sublime_plugin.TextCommand):
     def run(self, edit: sublime.Edit, args: dict = {}) -> None:
+        args["text"] = get_text_delimiter().join(
+            [self.view.substr(region) for region in self.view.sel()]
+        )
+        converter = args["converter"]
+
+        if converter.endswith("@Local"):
+            converter = converter[0 : -len("@Local")]
+
+            if converter == "WikiSimplified":
+                db = json.loads(
+                    sublime.load_resource("Packages/Fanhuaji/data/zh2Hans.json"), encoding="UTF-8"
+                )
+
+                # Trie longest replacing?
+                ...
+        else:
+            text = self._convert_online(args)
+
+        texts = text.split(get_text_delimiter())
+        blocks = [{"region": z[0], "text": z[1]} for z in zip(self.view.sel(), texts)]
+
+        for block in reversed(blocks):
+            self.view.replace(edit, block["region"], block["text"])
+
+    def _convert_online(self, args: dict):
         real_args = prepare_fanhuaji_convert_args(self.view)
         real_args.update(args)
 
@@ -61,11 +87,7 @@ class FanhuajiConvertCommand(sublime_plugin.TextCommand):
 
             return
 
-        texts = result["data"]["text"].split(get_text_delimiter())
-        blocks = [{"region": z[0], "text": z[1]} for z in zip(self.view.sel(), texts)]
-
-        for block in reversed(blocks):
-            self.view.replace(edit, block["region"], block["text"])
+        return result["data"]["text"]
 
     def _doApiConvert(self, args: dict) -> None:
         if get_setting("debug"):

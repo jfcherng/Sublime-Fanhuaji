@@ -42,6 +42,9 @@ def get_converters_info(index=None) -> dict:
         {"name": "Mars", "desc": "火星化"},
         {"name": "WikiSimplified", "desc": "维基简体化"},
         {"name": "WikiTraditional", "desc": "維基繁體化"},
+        # local
+        {"name": "WikiSimplified@Local", "desc": "维基简体化（本地）"},
+        {"name": "WikiTraditional@Local", "desc": "維基繁體化（本地）"},
     ]
 
     return info[index] if isinstance(index, int) else info

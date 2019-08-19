@@ -1,6 +1,6 @@
 import json
 import sublime
-from .settings import get_setting, get_text_delimiter
+from .settings import get_setting
 
 
 def prepare_fanhuaji_convert_args(view: sublime.View) -> dict:
@@ -31,7 +31,6 @@ def prepare_fanhuaji_convert_args(view: sublime.View) -> dict:
     args["prettify"] = False
 
     # 參數： API convert 端點
-    args["text"] = get_text_delimiter().join([view.substr(region) for region in view.sel()])
     args["diffEnable"] = False
 
     return args

@@ -70,4 +70,20 @@
             "converter": "WikiTraditional",
         },
     },
+}, {
+    "caption": "Fanhuaji （繁化姬）：维基简体化（本地）",
+    "command": "fanhuaji_convert",
+    "args": {
+        "args": {
+            "converter": "WikiSimplified@Local",
+        },
+    },
+}, {
+    "caption": "Fanhuaji （繁化姬）：維基繁體化（本地）",
+    "command": "fanhuaji_convert",
+    "args": {
+        "args": {
+            "converter": "WikiTraditional@Local",
+        },
+    },
 }]
